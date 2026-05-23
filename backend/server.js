@@ -9,15 +9,21 @@ import User from "./models/User.js";
 
 import { JWT_SECRET } from "./config.js";
 
+const cors = require("cors");
+
+app.use(cors({
+    origin: "*"
+}));
+
 import {
-  BUNNY_API_KEY,
-  LIBRARY_ID,
-  CDN_BASE
+    BUNNY_API_KEY,
+    LIBRARY_ID,
+    CDN_BASE
 } from "./config.js";
 
 const app = express();
 mongoose.connect(
-  "mongodb://127.0.0.1:27017/mycinema"
+    "mongodb://127.0.0.1:27017/mycinema"
 );
 
 console.log("MongoDB pripojené");
@@ -27,50 +33,46 @@ app.use(express.json());
 
 app.get("/api/videos", async (req, res) => {
 
-  try {
+    try {
 
-    const response = await fetch(
-      `https://video.bunnycdn.com/library/${LIBRARY_ID}/videos`,
-      {
-        headers: {
-          AccessKey: BUNNY_API_KEY
-        }
-      }
-    );
+        const response = await fetch(
+            `https://video.bunnycdn.com/library/${LIBRARY_ID}/videos`, {
+                headers: {
+                    AccessKey: BUNNY_API_KEY
+                }
+            }
+        );
 
-    const data = await response.json();
+        const data = await response.json();
 
-    const videos = data.items.map(video => {
+        const videos = data.items.map(video => {
 
-      return {
-        guid: video.guid,
-        title: video.title.replaceAll("+", " "),
-        status: video.status,
-        encodeProgress: video.encodeProgress,
-        length: video.length,
-        views: video.views,
-        dateUploaded: video.dateUploaded,
+            return {
+                guid: video.guid,
+                title: video.title.replaceAll("+", " "),
+                status: video.status,
+                encodeProgress: video.encodeProgress,
+                length: video.length,
+                views: video.views,
+                dateUploaded: video.dateUploaded,
 
-        thumbnail:
-          `${CDN_BASE}/${video.guid}/thumbnail.jpg`,
+                thumbnail: `${CDN_BASE}/${video.guid}/thumbnail.jpg`,
 
-        player:
-          `https://player.mediadelivery.net/play/${LIBRARY_ID}/${video.guid}`,
+                player: `https://player.mediadelivery.net/play/${LIBRARY_ID}/${video.guid}`,
 
-        iframe:
-          `https://iframe.mediadelivery.net/embed/${LIBRARY_ID}/${video.guid}`
-      };
-    });
+                iframe: `https://iframe.mediadelivery.net/embed/${LIBRARY_ID}/${video.guid}`
+            };
+        });
 
-    res.json(videos);
+        res.json(videos);
 
-  } catch (err) {
+    } catch (err) {
 
-    res.status(500).json({
-      error: err.message
-    });
+        res.status(500).json({
+            error: err.message
+        });
 
-  }
+    }
 
 });
 app.post("/api/register", async (req, res) => {
@@ -80,7 +82,7 @@ app.post("/api/register", async (req, res) => {
         const { username, password } = req.body;
 
         const hashedPassword =
-          await bcrypt.hash(password, 10);
+            await bcrypt.hash(password, 10);
 
         const user = new User({
             username,
@@ -122,10 +124,10 @@ app.post("/api/login", async (req, res) => {
         }
 
         const valid =
-          await bcrypt.compare(
-            password,
-            user.password
-          );
+            await bcrypt.compare(
+                password,
+                user.password
+            );
 
         if (!valid) {
 
@@ -135,12 +137,10 @@ app.post("/api/login", async (req, res) => {
 
         }
 
-        const token = jwt.sign(
-            {
+        const token = jwt.sign({
                 id: user._id
             },
-            JWT_SECRET,
-            {
+            JWT_SECRET, {
                 expiresIn: "7d"
             }
         );
@@ -160,5 +160,5 @@ app.post("/api/login", async (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("Backend beží na http://localhost:3000");
+    console.log("Backend beží na http://localhost:3000");
 });
