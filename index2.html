@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<title>Moja Video knižnica</title>
+
+<style>
+body {
+    background: #111;
+    color: white;
+    font-family: Arial;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: #222;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1 style="padding:20px;">🎬 Moje filmy</h1>
+
+<div class="grid" id="movies"></div>
+
+<script>
+fetch("http://localhost:3000/api/videos")
+.then(res => res.json())
+.then(data => {
+    const container = document.getElementById("movies");
+
+    data.forEach(video => {
+        const div = document.createElement("div");
+
+        div.className = "card";
+
+        div.innerHTML = `
+            <img src="${video.thumbnailUrl}">
+            <h3>${video.title}</h3>
+        `;
+
+        div.onclick = () => {
+            window.location.href = "player.html?id=" + video.guid;
+        };
+
+        container.appendChild(div);
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Cinema</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<header>
+    <div class="logo">🎬 MY CINEMA</div>
+
+    <input
+      id="search"
+      placeholder="Hľadať film..."
+    >
+</header>
+
+<section class="hero">
+    <div class="overlay">
+        <h1>Legálny Stream Cinema Clone</h1>
+        <p>Bunny Stream + Netflix UI</p>
+    </div>
+</section>
+
+<div class="topbar">
+
+    <button onclick="filterAll()">
+      Všetko
+    </button>
+
+    <button onclick="filterReady()">
+      Hotové
+    </button>
+
+    <button onclick="filterEncoding()">
+      Encoding
+    </button>
+
+</div>
+
+<h2 class="section-title">
+  🎥 Filmy
+</h2>
+<div class="auth">
+
+    <input
+      id="username"
+      placeholder="Meno">
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Heslo">
+
+    <button onclick="register()">
+      Registrovať
+    </button>
+
+    <button onclick="login()">
+      Prihlásiť
+    </button>
+
+</div>
+<div id="movies" class="grid"></div>
+
+<div id="playerModal" class="modal hidden">
+
+    <div class="modal-content">
+
+        <button class="close-btn" onclick="closePlayer()">
+          ✕
+        </button>
+
+        <iframe
+          id="playerFrame"
+          allowfullscreen>
+        </iframe>
+
+    </div>
+
+</div>
+
+<script src="./app.js"></script>
+
+</body>
+</html>

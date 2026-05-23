@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <title>Moje filmy</title>
+</head>
+<body>
+
+<h1>Filmy</h1>
+<div id="list"></div>
+
+<script>
+fetch("http://localhost:3000/api/videos")
+  .then(res => res.json())
+  .then(data => {
+      const list = document.getElementById("list");
+
+      data.items.forEach(video => {
+          const div = document.createElement("div");
+
+          div.innerHTML = `
+              <h3>${video.title}</h3>
+              <img src="${video.thumbnailUrl}" width="200">
+              <br>
+              <a href="https://iframe.mediadelivery.net/play/665423/${video.guid}" target="_blank">
+                  Prehrať
+              </a>
+              <hr>
+          `;
+
+          list.appendChild(div);
+      });
+  });
+</script>
+
+</body>
+</html>
