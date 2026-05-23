@@ -12,7 +12,7 @@ import { JWT_SECRET } from "./config.js";
 const cors = require("cors");
 
 app.use(cors({
-    origin: "*"
+    origin: "https://tvoj-projekt.vercel.app"
 }));
 
 import {
