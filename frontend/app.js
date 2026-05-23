@@ -1,6 +1,8 @@
 const container = document.getElementById("movies");
 const search = document.getElementById("search");
+const cors = require("cors");
 
+app.use(cors());
 let allVideos = [];
 
 async function loadVideos() {
