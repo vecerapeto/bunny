@@ -5,15 +5,31 @@ let allVideos = [];
 
 async function loadVideos() {
 
-    const response = await fetch(
-      "http://localhost:3000/api/videos"
-    );
+    try {
 
-    const data = await response.json();
+        const response = await fetch(
+            "https://bunny-rouge.vercel.app/api/videos"
+            //https://bunny-rouge.vercel.app/
+        );
 
-    allVideos = data;
+        const data = await response.json();
 
-    renderVideos(allVideos);
+        console.log(data);
+
+        if (!Array.isArray(data)) {
+            console.error("API nevrátilo pole", data);
+            return;
+        }
+
+        allVideos = data;
+
+        renderVideos(allVideos);
+
+    } catch (err) {
+
+        console.error("Fetch chyba:", err);
+
+    }
 }
 
 function renderVideos(videos) {
@@ -32,7 +48,7 @@ function renderVideos(videos) {
         } else {
 
             thumb =
-              "https://dummyimage.com/500x300/333/fff&text=Encoding";
+                "https://dummyimage.com/500x300/333/fff&text=Encoding";
 
         }
 
@@ -141,26 +157,24 @@ search.addEventListener("input", e => {
 async function register() {
 
     const username =
-      document.getElementById("username").value;
+        document.getElementById("username").value;
 
     const password =
-      document.getElementById("password").value;
+        document.getElementById("password").value;
 
     const response = await fetch(
-      "http://localhost:3000/api/register",
-      {
-        method: "POST",
+        "https://bunny-rouge.vercel.app/api/register", {
+            method: "POST",
 
-        headers: {
-            "Content-Type":
-              "application/json"
-        },
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-        body: JSON.stringify({
-            username,
-            password
-        })
-      }
+            body: JSON.stringify({
+                username,
+                password
+            })
+        }
     );
 
     const data = await response.json();
@@ -171,26 +185,24 @@ async function register() {
 async function login() {
 
     const username =
-      document.getElementById("username").value;
+        document.getElementById("username").value;
 
     const password =
-      document.getElementById("password").value;
+        document.getElementById("password").value;
 
     const response = await fetch(
-      "http://localhost:3000/api/login",
-      {
-        method: "POST",
+        "https://bunny-rouge.vercel.app/api/login", {
+            method: "POST",
 
-        headers: {
-            "Content-Type":
-              "application/json"
-        },
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-        body: JSON.stringify({
-            username,
-            password
-        })
-      }
+            body: JSON.stringify({
+                username,
+                password
+            })
+        }
     );
 
     const data = await response.json();
@@ -198,8 +210,8 @@ async function login() {
     if (data.token) {
 
         localStorage.setItem(
-          "token",
-          data.token
+            "token",
+            data.token
         );
 
         alert("Prihlásený");
